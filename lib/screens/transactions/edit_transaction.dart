@@ -46,6 +46,7 @@ class _EditTransactionState extends State<EditTransaction> {
   ];
   @override
   void initState() {
+    _selectedCtegoryModel = widget.currentDatas.category;
     _selectedDate = widget.currentDatas.date;
     _noteTextEditingController =
         TextEditingController(text: widget.currentDatas.notes);
@@ -53,16 +54,26 @@ class _EditTransactionState extends State<EditTransaction> {
     _amoundTextEditingController =
         TextEditingController(text: widget.currentDatas.amount.toString());
 
-    // _selectedCategoryType = widget.currentDatas.type;
+    _selectedCategoryType = widget.currentDatas.type;
 
     dateString =
         '${_selectedDate!.day} ${monthList[_selectedDate!.month - 1]} ${_selectedDate!.year} ';
+
     categoryid = widget.currentDatas.category.id;
+
+    if (CategoryDB.instance.incomeCategoryListListener.value
+            .contains(widget.currentDatas.category) ||
+        CategoryDB.instance.expenseCategoryListListener.value
+            .contains(widget.currentDatas.category)) {
+    } else {
+      categoryid = null;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    log(_selectedCtegoryModel.toString());
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 167, 215, 203),
       body: SafeArea(
@@ -186,7 +197,7 @@ class _EditTransactionState extends State<EditTransaction> {
                       height: 30,
                     ),
 
-                    //select category
+                    //select category----------------------------------------------------------------------------------
 
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.2,
@@ -229,7 +240,10 @@ class _EditTransactionState extends State<EditTransaction> {
                               value: e.id,
                               child: Text(e.name),
                               onTap: () {
-                                _selectedCtegoryModel = e;
+                                setState(() {
+                                  _selectedCtegoryModel = e;
+                                  log(e.toString());
+                                });
                               },
                             );
                           },
