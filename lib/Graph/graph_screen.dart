@@ -14,15 +14,15 @@ class ScreenGraph extends StatelessWidget {
       child: Scaffold(
           backgroundColor: const Color.fromRGBO(183, 244, 235, 0.902),
           body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [DateFilterGraph()],
-                ),
-              ),
-              const TabBar(labelColor: Colors.black, tabs: [
+            children: const [
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 20),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.end,
+              //     children: const [DateFilterGraph()],
+              //   ),
+              // ),
+              TabBar(labelColor: Colors.black, tabs: [
                 Tab(
                   text: 'All',
                 ),
@@ -33,7 +33,7 @@ class ScreenGraph extends StatelessWidget {
                   text: 'Expence',
                 ),
               ]),
-              const Expanded(
+              Expanded(
                   child: TabBarView(
                 children: [AllGraph(), IncomeGraph(), ExpenseGraph()],
               ))

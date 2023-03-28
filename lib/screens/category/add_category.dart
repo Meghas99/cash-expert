@@ -6,11 +6,15 @@ ValueNotifier<CategoryType> selectedCategoryNotifier =
     ValueNotifier(CategoryType.income);
 
 class AddCategory extends StatelessWidget {
-  AddCategory({super.key});
+  AddCategory({super.key, required this.isexpense});
+
+  bool isexpense;
 
   final _nameEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    selectedCategoryNotifier.value =
+        isexpense ? CategoryType.expense : CategoryType.income;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -110,7 +114,7 @@ class Radiobutton extends StatelessWidget {
                   }
                   selectedCategoryNotifier.value = value;
                   selectedCategoryNotifier.notifyListeners(); // setState(() {
-                  //   _type = value;
+                  // _type = value;
                   // });
                 },
               );

@@ -17,7 +17,7 @@ class DateFilterGraph extends StatelessWidget {
       ),
       color: const Color.fromARGB(255, 101, 163, 150),
       child: const Icon(
-        Icons.sort,
+        Icons.calendar_month_rounded,
         color: Colors.black,
         // size: 0,
         // shadows: <Shadow>[Shadow(color: Colors.white, blurRadius: 15.0)],

@@ -23,10 +23,11 @@ class _AllGraphState extends State<AllGraph> {
   @override
   void initState() {
     _tooltipBehavior = TooltipBehavior(
-      // format: 'Income : ₹${incomeTotal.value}'
-      //     'Income : ₹${expenseTotal.value}',
+      //  format: 'Income : ₹${incomeTotal.value}'
+      //       'Income : ₹${expenseTotal.value}',
       enable: true,
     );
+
     overViewGraphNotifier.value =
         TransactionDB.instance.transactionListNotifier.value;
     super.initState();
@@ -40,6 +41,7 @@ class _AllGraphState extends State<AllGraph> {
           valueListenable: overViewGraphNotifier,
           builder: (BuildContext context, List<TransactionModel> newList,
               Widget? child) {
+            // Map graph_name = {'Map key': 'good', 'amount': 100};
             Map incomeMap = {'name': 'Income', "amount": incomeTotal.value};
             Map expenseMap = {"name": "Expense", "amount": expenseTotal.value};
             List<Map> totalMap = [incomeMap, expenseMap];
@@ -50,10 +52,11 @@ class _AllGraphState extends State<AllGraph> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Center(child: Text('no data'))
                           Center(
                             child: Lottie.network(
-                                'https://assets5.lottiefiles.com/packages/lf20_rdjfuniz.json'),
-                          )
+                                'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+                          ),
                         ],
                       ),
                     ),
@@ -73,6 +76,7 @@ class _AllGraphState extends State<AllGraph> {
                     legend: Legend(
                       isVisible: true,
                       overflowMode: LegendItemOverflowMode.scroll,
+                      shouldAlwaysShowScrollbar: true,
                       alignment: ChartAlignment.center,
                     ),
                   );

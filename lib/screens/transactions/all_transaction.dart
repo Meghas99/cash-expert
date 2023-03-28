@@ -30,13 +30,17 @@ class _AllTransactionsState extends State<AllTransactions> {
 
   @override
   Widget build(BuildContext context) {
-    // incomeAndExpense();
-    TransactionDB.instance.refresh();
+    //incomeAndExpense();
 
     return ValueListenableBuilder(
         valueListenable: searchResultNotifier,
         builder:
             (BuildContext context, List<TransactionModel> newList, Widget? _) {
+          // log(newList.length.toString());
+          newList.sort(
+            (a, b) => b.id!.compareTo(a.id!),
+          );
+          // log('()')
           return Scaffold(
             backgroundColor: const Color.fromRGBO(183, 244, 235, 0.902),
             appBar: AppBar(
@@ -53,9 +57,12 @@ class _AllTransactionsState extends State<AllTransactions> {
               actions: const <Widget>[
                 ListFilterTransaction(),
                 SizedBox(
-                  width: 20,
+                  width: 30,
                 ),
                 DateFilterTransaction(),
+                SizedBox(
+                  width: 20,
+                ),
               ],
               centerTitle: true,
               title: const Text(
@@ -63,186 +70,200 @@ class _AllTransactionsState extends State<AllTransactions> {
                 style: TextStyle(color: Color.fromARGB(255, 21, 47, 68)),
               ),
             ),
-            body: Column(
-              children: [
-                const SearchField(),
-                Expanded(
-                  child: newList.isEmpty
-                      ? Center(
-                          child: Lottie.network(
-                              'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                        )
-                      : ListView.builder(
-                          // physics: const NeverScrollableScrollPhysics(),
-                          itemCount: newList.length,
-                          itemBuilder: (ctx, index) {
-                            final value = newList[index];
+            body: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Column(
+                children: [
+                  const SearchField(),
+                  Expanded(
+                    child: newList.isEmpty
+                        ? Center(
+                            child: Lottie.network(
+                                'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+                          )
+                        : ListView.builder(
+                            // physics: const NeverScrollableScrollPhysics(),
+                            itemCount: newList.length,
+                            itemBuilder: (ctx, index) {
+                              final value = newList[index];
 
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Card(
-                                color: const Color.fromARGB(255, 195, 202, 213),
-                                elevation: 0,
-                                child: Slidable(
-                                  endActionPane: ActionPane(
-                                    motion: const ScrollMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        onPressed: (ctx) async {
-                                          showDialog(
-                                            context: context,
-                                            builder: ((context) {
-                                              return AlertDialog(
-                                                content: const Text(
-                                                  'Do you want to delete?',
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Card(
+                                  color:
+                                      const Color.fromARGB(255, 195, 202, 213),
+                                  elevation: 0,
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                      motion: const ScrollMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (ctx) async {
+                                            showDialog(
+                                              context: context,
+                                              builder: ((context) {
+                                                return AlertDialog(
+                                                  content: const Text(
+                                                    'Do you want to delete?',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                    ),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                actions: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      TextButton(
-                                                        onPressed: (() {
-                                                          TransactionDB.instance
-                                                              .deleteTransaction(
-                                                                  value.id!);
+                                                  actions: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: (() {
+                                                            TransactionDB
+                                                                .instance
+                                                                .deleteTransaction(
+                                                                    value.id!);
 
-                                                          TransactionDB.instance
-                                                              .refresh();
-                                                          searchResultNotifier
-                                                                  .value =
-                                                              TransactionDB
-                                                                  .instance
-                                                                  .transactionListNotifier
-                                                                  .value;
-                                                          searchResultNotifier
-                                                              .notifyListeners();
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        }),
-                                                        child: const Text(
-                                                          'yes',
-                                                          style: TextStyle(
-                                                            color: Colors.red,
+                                                            TransactionDB
+                                                                .instance
+                                                                .refresh();
+                                                            searchResultNotifier
+                                                                    .value =
+                                                                TransactionDB
+                                                                    .instance
+                                                                    .transactionListNotifier
+                                                                    .value;
+                                                            searchResultNotifier
+                                                                .notifyListeners();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          }),
+                                                          child: const Text(
+                                                            'yes',
+                                                            style: TextStyle(
+                                                              color: Colors.red,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: (() {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        }),
-                                                        child: const Text(
-                                                          'no',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.green),
+                                                        TextButton(
+                                                          onPressed: (() {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          }),
+                                                          child: const Text(
+                                                            'no',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .green),
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              );
-                                            }),
-                                          );
-                                        },
-                                        icon: Icons.delete,
-                                        foregroundColor: Colors.red,
-                                        label: 'delete',
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 167, 215, 203),
-                                      ),
-                                      SlidableAction(
-                                        onPressed: (ctx) {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: ((context) {
-                                                return (EditTransaction(
-                                                  currentDatas: value,
-                                                ));
+                                                      ],
+                                                    ),
+                                                  ],
+                                                );
                                               }),
-                                            ),
-                                          );
-                                        },
-                                        icon: Icons.edit,
-                                        foregroundColor: Colors.indigo[500],
-                                        label: 'edit',
-                                        backgroundColor: const Color.fromARGB(
-                                            255, 167, 215, 203),
-                                      )
-                                    ],
-                                  ),
-                                  child: ListTile(
-                                    leading: CircleAvatar(
-                                      radius: 23,
-                                      backgroundColor:
-                                          value.type == CategoryType.income
-                                              ? Colors.greenAccent[700]
-                                              : Colors.orange,
-                                      child: Icon(
-                                        value.type == CategoryType.income
-                                            ? Icons.currency_rupee
-                                            : Icons.shopping_bag,
-                                        color: const Color.fromARGB(
-                                            255, 241, 233, 233),
-                                      ),
+                                            );
+                                          },
+                                          icon: Icons.delete,
+                                          foregroundColor: Colors.red,
+                                          label: 'delete',
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 167, 215, 203),
+                                        ),
+                                        SlidableAction(
+                                          onPressed: (ctx) {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: ((context) {
+                                                  return (EditTransaction(
+                                                    currentDatas: value,
+                                                  ));
+                                                }),
+                                              ),
+                                            );
+                                          },
+                                          icon: Icons.edit,
+                                          foregroundColor: Colors.indigo[500],
+                                          label: 'edit',
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 167, 215, 203),
+                                        )
+                                      ],
                                     ),
-                                    title: Text(
-                                      value.category.name,
-                                    ),
-                                    subtitle: Text(
-                                      value.notes,
-                                      // maxLines: 1,
-                                      style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 21, 28, 111)),
-                                    ),
-                                    trailing: Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: TextButton(
-                                        onPressed: () {},
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        radius: 23,
+                                        backgroundColor:
                                             value.type == CategoryType.income
-                                                ? Text(
-                                                    '+₹ ${value.amount}',
-                                                    style: const TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 20, 171, 25)),
-                                                  )
-                                                : Text(
-                                                    '-₹ ${value.amount}',
-                                                    style: const TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                            Text(
-                                              parseDate(value.date),
-                                              style: const TextStyle(
-                                                  fontSize: 11,
-                                                  color: Color.fromARGB(
-                                                      255, 38, 6, 127)),
-                                            ),
-                                          ],
+                                                ? Colors.greenAccent[700]
+                                                : Colors.orange,
+                                        child: Icon(
+                                          value.type == CategoryType.income
+                                              ? Icons.currency_rupee
+                                              : Icons.shopping_bag,
+                                          color: const Color.fromARGB(
+                                              255, 241, 233, 233),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        value.category.name,
+                                      ),
+                                      subtitle: Text(
+                                        value.notes,
+                                        // maxLines: 1,
+                                        style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 21, 28, 111)),
+                                      ),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: TextButton(
+                                          onPressed: () {},
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              value.type == CategoryType.income
+                                                  ? Text(
+                                                      '+₹ ${value.amount}',
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              20,
+                                                              171,
+                                                              25)),
+                                                    )
+                                                  : Text(
+                                                      '-₹ ${value.amount}',
+                                                      style: const TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                              Text(
+                                                parseDate(value.date),
+                                                style: const TextStyle(
+                                                    fontSize: 11,
+                                                    color: Color.fromARGB(
+                                                        255, 38, 6, 127)),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
-              ],
+                              );
+                            },
+                          ),
+                  ),
+                ],
+              ),
             ),
           );
         });

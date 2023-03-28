@@ -58,8 +58,9 @@ class _AddCategoryIncomeState extends State<AddCategoryIncome>
             floatingActionButton: FloatingActionButton(
               backgroundColor: const Color.fromARGB(255, 16, 167, 89),
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AddCategory()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AddCategory(
+                        isexpense: _tabController.index == 0 ? false : true)));
               },
               child: const Icon(
                 Icons.add,

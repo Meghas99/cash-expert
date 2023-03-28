@@ -36,6 +36,7 @@ class TransactionDB implements TransactionFunctions {
   Future<void> addTransaction(TransactionModel obj) async {
     final db = await Hive.openBox<TransactionModel>(transactionDbName);
     await db.put(obj.id, obj);
+    // await db.add(obj);
   }
 
   Future<void> refresh() async {
@@ -86,12 +87,13 @@ class TransactionDB implements TransactionFunctions {
 
   filter(int indx) {
     if (indx == 0) {
-      searchResultNotifier.value = transactionListNotifier.value;
+      filteredList = transactionListNotifier.value;
     } else if (indx == 1) {
-      searchResultNotifier.value = transactionIncomeListNotifier.value;
+      filteredList = transactionIncomeListNotifier.value;
     } else {
-      searchResultNotifier.value = transactionExpenseListNotifier.value;
+      filteredList = transactionExpenseListNotifier.value;
     }
+    refreshSearchResult();
   }
 
   Future<void> refreshAllTransaction() async {

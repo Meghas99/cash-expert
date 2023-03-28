@@ -28,7 +28,52 @@ class IncomeListCategory extends StatelessWidget {
                     ),
                     trailing: IconButton(
                       onPressed: () {
-                        CategoryDB.instance.deleteCategory(category.id);
+                        showDialog(
+                          context: context,
+                          builder: ((context) {
+                            return AlertDialog(
+                              content: const Text(
+                                'Do you want to delete?',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              actions: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton(
+                                      onPressed: (() {
+                                        CategoryDB.instance
+                                            .deleteCategory(category.id);
+
+                                        Navigator.of(context).pop();
+                                      }),
+                                      child: const Text(
+                                        'yes',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: (() {
+                                        Navigator.of(context).pop();
+                                      }),
+                                      child: const Text(
+                                        'no',
+                                        style: TextStyle(color: Colors.green),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }),
+                        );
                       },
                       icon: const Icon(
                         Icons.close,

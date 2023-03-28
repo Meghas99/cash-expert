@@ -39,10 +39,11 @@ class _ExpenseGraphState extends State<ExpenseGraph> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Text('no data')
                           Center(
                             child: Lottie.network(
-                                'https://assets5.lottiefiles.com/packages/lf20_rdjfuniz.json'),
-                          )
+                                'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+                          ),
                         ],
                       ),
                     ),
@@ -58,20 +59,16 @@ class _ExpenseGraphState extends State<ExpenseGraph> {
                               expenseDate.amount,
                           dataLabelSettings: const DataLabelSettings(
                             isVisible: true,
-                            labelIntersectAction: LabelIntersectAction.none,
-                            textStyle: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
                           ),
                           enableTooltip: true)
                     ],
                     legend: Legend(
                       isVisible: true,
                       overflowMode: LegendItemOverflowMode.scroll,
+                      shouldAlwaysShowScrollbar: true,
                       alignment: ChartAlignment.center,
                     ),
-                    // primaryXAxis: CategoryAxis(),
+                    //primaryXAxis: CategoryAxis(),
                   );
           },
         ),

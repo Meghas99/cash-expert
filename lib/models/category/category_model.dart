@@ -34,4 +34,7 @@ class CategoryModel {
   String toString() {
     return '{$name $type}';
   }
+
+  @override
+  bool operator ==(dynamic other) => ((id == other.id) && (name == other.name));
 }

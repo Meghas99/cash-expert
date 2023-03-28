@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -40,7 +38,7 @@ class _WidgetDateRangeState extends State<WidgetDateRange> {
             },
             child: Text(
               _startDate == null ? 'From' : parseDate(_startDate!),
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
             )),
         TextButton(
           onPressed: () async {
@@ -59,7 +57,7 @@ class _WidgetDateRangeState extends State<WidgetDateRange> {
           },
           child: Text(
             _endDate == null ? 'To' : parseDate(_endDate!),
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
         ),
         ClipRRect(
@@ -67,8 +65,8 @@ class _WidgetDateRangeState extends State<WidgetDateRange> {
             child: Container(
                 height: 30,
                 width: 30,
-                color: Color.fromARGB(255, 131, 94, 212),
-                child: Icon(Icons.check_circle)))
+                color: const Color.fromARGB(255, 131, 94, 212),
+                child: const Icon(Icons.check_circle)))
       ],
     );
   }

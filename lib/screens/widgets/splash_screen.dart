@@ -14,9 +14,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    navigatehome();
     CategoryDB.instance.refreshUI();
-    TransactionDB.instance.refresh();
+    TransactionDB.instance.refresh().then((value) => navigatehome());
+
     super.initState();
   }
 

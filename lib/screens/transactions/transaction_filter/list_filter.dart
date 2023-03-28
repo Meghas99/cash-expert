@@ -28,6 +28,7 @@ class ListFilterTransaction extends StatelessWidget {
             "All",
           ),
           onTap: () {
+            FocusScope.of(context).unfocus();
             TransactionDB.instance.filter(0);
           },
         ),
@@ -37,6 +38,7 @@ class ListFilterTransaction extends StatelessWidget {
             "Income",
           ),
           onTap: () {
+            FocusScope.of(context).unfocus();
             TransactionDB.instance.filter(1);
           },
         ),
@@ -46,6 +48,7 @@ class ListFilterTransaction extends StatelessWidget {
               "Expense",
             ),
             onTap: () {
+              FocusScope.of(context).unfocus();
               TransactionDB.instance.filter(2);
             }),
       ],

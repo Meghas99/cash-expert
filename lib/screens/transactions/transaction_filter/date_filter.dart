@@ -29,7 +29,7 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
       ),
       color: Color.fromARGB(255, 101, 163, 150),
       child: const Icon(
-        Icons.sort,
+        Icons.calendar_month_rounded,
         color: Colors.black,
         // size: 0,
         // shadows: <Shadow>[Shadow(color: Colors.white, blurRadius: 15.0)],
@@ -41,9 +41,9 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
             "All",
           ),
           onTap: () {
-            searchResultNotifier.value =
+            dateFilteredList =
                 TransactionDB.instance.transactionListNotifier.value;
-            searchResultNotifier.notifyListeners();
+            refreshSearchResult();
           },
         ),
         PopupMenuItem(
@@ -52,17 +52,16 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
             "Today",
           ),
           onTap: () {
-            searchResultNotifier.value =
+            dateFilteredList =
                 TransactionDB.instance.transactionListNotifier.value;
             var today = DateTime.now();
-            var newList = searchResultNotifier.value
+            dateFilteredList = dateFilteredList
                 .where((element) =>
                     element.date.day == today.day &&
                     element.date.month == today.month &&
                     element.date.year == today.year)
                 .toList();
-            searchResultNotifier.value = newList;
-            searchResultNotifier.notifyListeners();
+            refreshSearchResult();
           },
         ),
         PopupMenuItem(
@@ -71,17 +70,16 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
               "Yesterday",
             ),
             onTap: () {
-              searchResultNotifier.value =
+              dateFilteredList =
                   TransactionDB.instance.transactionListNotifier.value;
               var today = DateTime.now();
-              var newList = searchResultNotifier.value
+              dateFilteredList = dateFilteredList
                   .where((element) =>
                       element.date.day == today.day - 1 &&
                       element.date.month == today.month &&
                       element.date.year == today.year)
                   .toList();
-              searchResultNotifier.value = newList;
-              searchResultNotifier.notifyListeners();
+              refreshSearchResult();
             }),
         PopupMenuItem(
           onTap: () async {
@@ -89,12 +87,9 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
               return;
             } else {
               await TransactionDB.instance.refresh();
-              searchResultNotifier.value =
+              dateFilteredList =
                   TransactionDB.instance.transactionListNotifier.value;
-              var newList = searchResultNotifier.value
-
-                  // var today = DateTime.now();
-
+              dateFilteredList = dateFilteredList
                   .where(
                     (element) =>
                         element.date.isAfter(
@@ -103,63 +98,13 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
                             .isBefore(second!.add(const Duration(days: 1))),
                   )
                   .toList();
-              searchResultNotifier.value = newList;
-              searchResultNotifier.notifyListeners();
+              refreshSearchResult();
+
               // print(_endDate);
               // print(_startDate);
             }
           },
-          child: Row(children: [
-            WidgetDateRange()
-
-            // TextButton(
-            //     onPressed: () async {
-            //       final date = await showDatePicker(
-            //         context: context,
-            //         initialDate: _startDate ?? DateTime.now(),
-            //         firstDate: DateTime(2022),
-            //         lastDate: DateTime.now(),
-            //       );
-            //       if (date == null) {
-            //         return;
-            //       } else {
-            //         setState(() {
-            //           _startDate = date;
-            //         });
-            //       }
-            //     },
-            //     child: Text(
-            //       _startDate == null ? 'From' : parseDate(_startDate!),
-            //       style: TextStyle(color: Colors.black),
-            //     )),
-            // TextButton(
-            //     onPressed: () async {
-            //       DateTime? date = await showDatePicker(
-            //           context: context,
-            //           initialDate:
-            //               _startDate != null ? _startDate! : DateTime.now(),
-            //           firstDate:
-            //               _startDate != null ? _startDate! : DateTime.now(),
-            //           lastDate: DateTime.now());
-            //       if (date != null) {
-            //         setState(() {
-            //           _endDate = date;
-            //         });
-            //       }
-            //       // print(date);
-            //     },
-            //     child: Text(
-            //       _endDate == null ? 'To' : parseDate(_endDate!),
-            //       style: TextStyle(color: Colors.black),
-            //     )),
-            // ClipRRect(
-            //     borderRadius: BorderRadius.circular(10),
-            //     child: Container(
-            //         height: 30,
-            //         width: 30,
-            //         color: Color.fromARGB(255, 131, 94, 212),
-            //         child: Icon(Icons.check_circle)))
-          ]),
+          child: Row(children: const [WidgetDateRange()]),
         )
       ],
     );
@@ -171,41 +116,3 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
     return '${splittedDate.elementAt(1)} ${splittedDate.elementAt(0)} ${splittedDate.elementAt(2)}';
   }
 }
-
-// PopupMenuItem(
-        //     value: 4,
-        //     child: const Text(
-        //       "one Month",
-        //     ),
-        //     onTap: () async {
-        //       // searchResultNotifier.value =
-        //       //     TransactionDB.instance.transactionListNotifier.value;
-        //       // var today = DateTime.now();
-        //       // var newList = searchResultNotifier.value
-        //       //     .where((element) =>
-        //       //         element.date.month == today.month &&
-        //       //         element.date.year == today.year)
-        //       //     .toList();
-        //       // searchResultNotifier.value = newList;
-        //       // searchResultNotifier.notifyListeners();
-
-        //       final selectedDateTemp = await showDatePicker(
-        //           context: context,
-        //           initialDate: DateTime.now(),
-        //           firstDate: DateTime.now().subtract(const Duration(days: 30)),
-        //           lastDate: DateTime.now());
-
-        //       if (selectedDateTemp == null) {
-        //         return;
-        //       } else {
-        //         print(selectedDateTemp.toString());
-
-        //         var newList = searchResultNotifier.value
-        //             .where((element) =>
-        //                 element.date.month == selectedDateTemp.month &&
-        //                 element.date.year == selectedDateTemp.year)
-        //             .toList();
-        //         searchResultNotifier.value = newList;
-        //         searchResultNotifier.notifyListeners();
-        //       }
-        //     }),

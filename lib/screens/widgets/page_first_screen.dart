@@ -43,15 +43,6 @@ class _FrontPgeState extends State<FrontPge> {
             children: [
               Container(
                 alignment: Alignment.center,
-                // decoration: const BoxDecoration(
-                //   image: DecorationImage(
-                //     image: AssetImage('lib/images/rectangle.png'),
-                //     fit: BoxFit.cover,
-                //   ),
-                //   borderRadius: BorderRadius.all(
-                //     Radius.circular(10),
-                //   ),
-                // ),
                 child: Image.asset(
                   'lib/images/rectangle.png',
                   height: 250,
@@ -62,15 +53,7 @@ class _FrontPgeState extends State<FrontPge> {
               Container(
                 height: 150,
                 width: 500,
-                // color: Colors.pink,
                 alignment: Alignment.center,
-                // child: Text(
-                //   '${totalBalance.value.abs().toString()} ₹',
-                //   style: TextStyle(
-                //       color: Colors.white,
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: 30),
-                // ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -101,7 +84,7 @@ class _FrontPgeState extends State<FrontPge> {
                               ),
                               totalBalance.value >= 0
                                   ? Text(
-                                      '₹${totalBalance.value.abs().toString()} ',
+                                      '₹${totalBalance.value.toString()} ',
                                       style: const TextStyle(
                                         fontSize: 28,
                                         fontWeight: FontWeight.w800,
@@ -211,12 +194,18 @@ class _FrontPgeState extends State<FrontPge> {
           ),
           trailing: TextButton(
             onPressed: () {
-              // searchResultNotifier.value =
-              //     TransactionDB.instance.transactionListNotifier.value;
+              searchResultNotifier.value =
+                  TransactionDB.instance.transactionListNotifier.value;
               // searchResultNotifier.notifyListeners();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: ((context) => const AllTransactions())),
+                  builder: (context) {
+                    // refreshSearchResult();
+                    // refreshSearchResult();
+
+                    return AllTransactions();
+                  },
+                ),
               );
             },
             child: Container(
@@ -236,14 +225,18 @@ class _FrontPgeState extends State<FrontPge> {
               valueListenable: TransactionDB.instance.transactionListNotifier,
               builder: (BuildContext context, List<TransactionModel> newList,
                   Widget? _) {
+                newList.sort(
+                  (a, b) => b.id!.compareTo(a.id!),
+                );
                 return Column(
                   children: [
                     Expanded(
                       child: newList.isEmpty
-                          ? Center(
-                              child: Lottie.network(
-                                  'https://assets5.lottiefiles.com/packages/lf20_rdjfuniz.json'),
-                            )
+                          ? Center(child: Text('no data'))
+                          // Center(
+                          //     child: Lottie.network(
+                          //         'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+                          //   )
                           : ListView.builder(
                               // ignore: unnecessary_null_comparison
                               itemCount: newList == null

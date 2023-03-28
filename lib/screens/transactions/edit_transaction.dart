@@ -5,6 +5,7 @@ import 'package:moneymanagement/db/category/categoty_db.dart';
 import 'package:moneymanagement/db/transaction/transaction_db.dart';
 import 'package:moneymanagement/models/category/category_model.dart';
 import 'package:moneymanagement/models/transaction/transaction_model.dart';
+import 'package:moneymanagement/screens/category/add_category.dart';
 import 'package:moneymanagement/screens/home/home_screen.dart';
 import 'package:moneymanagement/screens/transactions/transaction_filter/search_transaction.dart';
 
@@ -100,6 +101,7 @@ class _EditTransactionState extends State<EditTransaction> {
                               onChanged: (newValue) {
                                 setState(() {
                                   _selectedCategoryType = CategoryType.income;
+                                  categoryid = null;
                                 });
                               },
                             ),
@@ -199,65 +201,94 @@ class _EditTransactionState extends State<EditTransaction> {
 
                     //select category----------------------------------------------------------------------------------
 
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      // padding: const EdgeInsets.only(left: 20),
-                      child: DropdownButtonFormField<String>(
-                        borderRadius: BorderRadius.circular(50),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: const BorderSide(
-                                width: 0,
-                              )),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(28),
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 195, 202, 213),
-                              width: 0,
+                    Row(
+                      children: [
+                        Center(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 32),
+                            width: MediaQuery.of(context).size.width / 1.4,
+                            height: MediaQuery.of(context).size.width / 6.2,
+                            // padding: const EdgeInsets.only(left: 20),
+                            child: DropdownButtonFormField<String>(
+                              borderRadius: BorderRadius.circular(50),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                      width: 0,
+                                    )),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(28),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 195, 202, 213),
+                                    width: 0,
+                                  ),
+                                ),
+                                fillColor:
+                                    const Color.fromARGB(255, 195, 202, 213),
+                                filled: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  log('value is empty or null');
+                                  return 'please choose category';
+                                }
+                                return null;
+                              },
+                              hint: const Text('Category'),
+                              value: categoryid,
+                              items:
+                                  (_selectedCategoryType == CategoryType.income
+                                          ? CategoryDB.instance
+                                              .incomeCategoryListListener
+                                          : CategoryDB.instance
+                                              .expenseCategoryListListener)
+                                      .value
+                                      .map(
+                                (e) {
+                                  return DropdownMenuItem(
+                                    value: e.id,
+                                    child: Text(e.name),
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedCtegoryModel = e;
+                                        log(e.toString());
+                                      });
+                                    },
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (selectedValue) {
+                                // print(selectedValue);
+
+                                setState(
+                                  () {
+                                    categoryid = selectedValue;
+                                  },
+                                );
+                              },
                             ),
                           ),
-                          fillColor: const Color.fromARGB(255, 195, 202, 213),
-                          filled: true,
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            log('value is empty or null');
-                            return 'please choose category';
-                          }
-                          return null;
-                        },
-                        hint: const Text('Category'),
-                        value: categoryid,
-                        items: (_selectedCategoryType == CategoryType.income
-                                ? CategoryDB.instance.incomeCategoryListListener
-                                : CategoryDB
-                                    .instance.expenseCategoryListListener)
-                            .value
-                            .map(
-                          (e) {
-                            return DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.name),
-                              onTap: () {
-                                setState(() {
-                                  _selectedCtegoryModel = e;
-                                  log(e.toString());
-                                });
-                              },
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (selectedValue) {
-                          // print(selectedValue);
-
-                          setState(
-                            () {
-                              categoryid = selectedValue;
-                            },
-                          );
-                        },
-                      ),
+                        IconButton(
+                            onPressed: (() {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AddCategory(
+                                        isexpense: _selectedCategoryType ==
+                                                CategoryType.income
+                                            ? false
+                                            : true,
+                                      )));
+                            }),
+                            icon: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    color: const Color.fromARGB(
+                                        255, 195, 202, 213),
+                                    child: const Icon(Icons.add))))
+                      ],
                     ),
 
                     const SizedBox(
@@ -377,6 +408,7 @@ class _EditTransactionState extends State<EditTransaction> {
                         if (_formKey.currentState!.validate()) {
                           log('Validation Successful');
                           await addTransaction();
+                          //wanted to go homescreen
                           HomeScreen.selectedIndexNotifier.value = 0;
                           // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context)
