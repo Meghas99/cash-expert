@@ -21,37 +21,40 @@ class ListFilterTransaction extends StatelessWidget {
         // size: 0,
         // shadows: <Shadow>[Shadow(color: Colors.white, blurRadius: 15.0)],
       ),
-      itemBuilder: (ctx) => [
-        PopupMenuItem(
-          value: 1,
-          child: const Text(
-            "All",
-          ),
-          onTap: () {
-            FocusScope.of(context).unfocus();
-            TransactionDB.instance.filter(0);
-          },
-        ),
-        PopupMenuItem(
-          value: 2,
-          child: const Text(
-            "Income",
-          ),
-          onTap: () {
-            FocusScope.of(context).unfocus();
-            TransactionDB.instance.filter(1);
-          },
-        ),
-        PopupMenuItem(
-            value: 3,
+      itemBuilder: (ctx) {
+        FocusScope.of(context).unfocus();
+        return [
+          PopupMenuItem(
+            value: 1,
             child: const Text(
-              "Expense",
+              "All",
             ),
             onTap: () {
               FocusScope.of(context).unfocus();
-              TransactionDB.instance.filter(2);
-            }),
-      ],
+              TransactionDB.instance.filter(0);
+            },
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: const Text(
+              "Income",
+            ),
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              TransactionDB.instance.filter(1);
+            },
+          ),
+          PopupMenuItem(
+              value: 3,
+              child: const Text(
+                "Expense",
+              ),
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                TransactionDB.instance.filter(2);
+              }),
+        ];
+      },
     );
   }
 }

@@ -61,6 +61,7 @@ class _SearchFieldState extends State<SearchField> {
                 suffixIcon: IconButton(
                     onPressed: () {
                       _searchQueryController.clear();
+                      refreshSearchResult();
                     },
                     icon: const Icon(
                       Icons.close,

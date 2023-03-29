@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:moneymanagement/Graph/all_grap.dart';
+import 'package:moneymanagement/models/categorised_model.dart';
 
 import 'package:moneymanagement/models/category/category_model.dart';
 import 'package:moneymanagement/models/transaction/transaction_model.dart';
@@ -27,6 +28,20 @@ class _IncomeGraphState extends State<IncomeGraph> {
             var allIncome = newList
                 .where((element) => element.type == CategoryType.income)
                 .toList();
+            List<CategorisedModel> categorisedList = [];
+            for (var element in allIncome) {
+              bool categoryExists = false;
+              for (var item in categorisedList) {
+                if (item.category == element.category) {
+                  categoryExists = true;
+                  item.amount = item.amount + element.amount;
+                }
+              }
+              if (categoryExists == false) {
+                categorisedList
+                    .add(CategorisedModel(element.amount, element.category));
+              }
+            }
             log(allIncome.toString());
             return overViewGraphNotifier.value.isEmpty
                 ? SingleChildScrollView(
@@ -46,11 +61,11 @@ class _IncomeGraphState extends State<IncomeGraph> {
                   )
                 : SfCircularChart(
                     series: <CircularSeries>[
-                      PieSeries<TransactionModel, String>(
-                        dataSource: allIncome,
-                        xValueMapper: (TransactionModel incomeData, _) =>
+                      PieSeries<CategorisedModel, String>(
+                        dataSource: categorisedList,
+                        xValueMapper: (CategorisedModel incomeData, _) =>
                             incomeData.category.name,
-                        yValueMapper: (TransactionModel incomeData, _) =>
+                        yValueMapper: (CategorisedModel incomeData, _) =>
                             incomeData.amount,
                         dataLabelSettings: const DataLabelSettings(
                           isVisible: true,

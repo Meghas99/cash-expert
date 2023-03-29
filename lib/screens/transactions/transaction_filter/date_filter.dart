@@ -34,40 +34,24 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
         // size: 0,
         // shadows: <Shadow>[Shadow(color: Colors.white, blurRadius: 15.0)],
       ),
-      itemBuilder: (ctx) => [
-        PopupMenuItem(
-          // value: 1,
-          child: const Text(
-            "All",
-          ),
-          onTap: () {
-            dateFilteredList =
-                TransactionDB.instance.transactionListNotifier.value;
-            refreshSearchResult();
-          },
-        ),
-        PopupMenuItem(
-          // value: 2,
-          child: const Text(
-            "Today",
-          ),
-          onTap: () {
-            dateFilteredList =
-                TransactionDB.instance.transactionListNotifier.value;
-            var today = DateTime.now();
-            dateFilteredList = dateFilteredList
-                .where((element) =>
-                    element.date.day == today.day &&
-                    element.date.month == today.month &&
-                    element.date.year == today.year)
-                .toList();
-            refreshSearchResult();
-          },
-        ),
-        PopupMenuItem(
-            // value: 3,
+      itemBuilder: (ctx) {
+        FocusScope.of(context).unfocus();
+        return [
+          PopupMenuItem(
+            // value: 1,
             child: const Text(
-              "Yesterday",
+              "All",
+            ),
+            onTap: () {
+              dateFilteredList =
+                  TransactionDB.instance.transactionListNotifier.value;
+              refreshSearchResult();
+            },
+          ),
+          PopupMenuItem(
+            // value: 2,
+            child: const Text(
+              "Today",
             ),
             onTap: () {
               dateFilteredList =
@@ -75,38 +59,57 @@ class _DateFilterTransactionState extends State<DateFilterTransaction> {
               var today = DateTime.now();
               dateFilteredList = dateFilteredList
                   .where((element) =>
-                      element.date.day == today.day - 1 &&
+                      element.date.day == today.day &&
                       element.date.month == today.month &&
                       element.date.year == today.year)
                   .toList();
               refreshSearchResult();
-            }),
-        PopupMenuItem(
-          onTap: () async {
-            if (first == null || second == null) {
-              return;
-            } else {
-              await TransactionDB.instance.refresh();
-              dateFilteredList =
-                  TransactionDB.instance.transactionListNotifier.value;
-              dateFilteredList = dateFilteredList
-                  .where(
-                    (element) =>
-                        element.date.isAfter(
-                            first!.subtract(const Duration(days: 1))) &&
-                        element.date
-                            .isBefore(second!.add(const Duration(days: 1))),
-                  )
-                  .toList();
-              refreshSearchResult();
+            },
+          ),
+          PopupMenuItem(
+              // value: 3,
+              child: const Text(
+                "Yesterday",
+              ),
+              onTap: () {
+                dateFilteredList =
+                    TransactionDB.instance.transactionListNotifier.value;
+                var today = DateTime.now();
+                dateFilteredList = dateFilteredList
+                    .where((element) =>
+                        element.date.day == today.day - 1 &&
+                        element.date.month == today.month &&
+                        element.date.year == today.year)
+                    .toList();
+                refreshSearchResult();
+              }),
+          PopupMenuItem(
+            onTap: () async {
+              if (first == null || second == null) {
+                return;
+              } else {
+                await TransactionDB.instance.refresh();
+                dateFilteredList =
+                    TransactionDB.instance.transactionListNotifier.value;
+                dateFilteredList = dateFilteredList
+                    .where(
+                      (element) =>
+                          element.date.isAfter(
+                              first!.subtract(const Duration(days: 1))) &&
+                          element.date
+                              .isBefore(second!.add(const Duration(days: 1))),
+                    )
+                    .toList();
+                refreshSearchResult();
 
-              // print(_endDate);
-              // print(_startDate);
-            }
-          },
-          child: Row(children: const [WidgetDateRange()]),
-        )
-      ],
+                // print(_endDate);
+                // print(_startDate);
+              }
+            },
+            child: Row(children: const [WidgetDateRange()]),
+          )
+        ];
+      },
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:moneymanagement/Graph/all_grap.dart';
+import 'package:moneymanagement/models/categorised_model.dart';
 
 import 'package:moneymanagement/models/category/category_model.dart';
 import 'package:moneymanagement/models/transaction/transaction_model.dart';
@@ -32,6 +33,20 @@ class _ExpenseGraphState extends State<ExpenseGraph> {
             var allIncome = newList
                 .where((element) => element.type == CategoryType.expense)
                 .toList();
+            List<CategorisedModel> categorisedList = [];
+            for (var element in allIncome) {
+              bool categoryExists = false;
+              for (var item in categorisedList) {
+                if (item.category == element.category) {
+                  categoryExists = true;
+                  item.amount = item.amount + element.amount;
+                }
+              }
+              if (categoryExists == false) {
+                categorisedList
+                    .add(CategorisedModel(element.amount, element.category));
+              }
+            }
             return overViewGraphNotifier.value.isEmpty
                 ? SingleChildScrollView(
                     child: Center(
@@ -51,11 +66,11 @@ class _ExpenseGraphState extends State<ExpenseGraph> {
                 : SfCircularChart(
                     tooltipBehavior: _tooltipBehavior,
                     series: <CircularSeries>[
-                      PieSeries<TransactionModel, String>(
-                          dataSource: allIncome,
-                          xValueMapper: (TransactionModel expenseDate, _) =>
+                      PieSeries<CategorisedModel, String>(
+                          dataSource: categorisedList,
+                          xValueMapper: (CategorisedModel expenseDate, _) =>
                               expenseDate.category.name,
-                          yValueMapper: (TransactionModel expenseDate, _) =>
+                          yValueMapper: (CategorisedModel expenseDate, _) =>
                               expenseDate.amount,
                           dataLabelSettings: const DataLabelSettings(
                             isVisible: true,
