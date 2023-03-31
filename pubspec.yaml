@@ -48,6 +48,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   hive_generator: ^2.0.0
+  flutter_launcher_icons: "^0.12.0"
+  
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/cashexpert.png"
+ 
+  
+ 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

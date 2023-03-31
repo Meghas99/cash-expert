@@ -10,7 +10,7 @@
 
 
    <application
-        android:label="moneymanagement"
+        android:label="Cash Expert"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
