@@ -232,7 +232,14 @@ class _FrontPgeState extends State<FrontPge> {
                   children: [
                     Expanded(
                       child: newList.isEmpty
-                          ? Center(child: Text('no data'))
+                          ? Center(
+                              child: Text(
+                              'no data is available!!',
+                              style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 3, 183, 30)),
+                            ))
                           // Center(
                           //     child: Lottie.network(
                           //         'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),

@@ -37,6 +37,7 @@ class _AllGraphState extends State<AllGraph> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      backgroundColor: const Color.fromRGBO(183, 244, 235, 0.902),
       body: ValueListenableBuilder(
           valueListenable: overViewGraphNotifier,
           builder: (BuildContext context, List<TransactionModel> newList,
@@ -54,9 +55,13 @@ class _AllGraphState extends State<AllGraph> {
                         children: [
                           // Center(child: Text('no data'))
                           Center(
-                            child: Lottie.network(
-                                'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                          ),
+                              child: Text(
+                            'no data is available!!',
+                            style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 3, 183, 30)),
+                          ))
                         ],
                       ),
                     ),

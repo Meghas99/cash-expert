@@ -80,9 +80,13 @@ class _AllTransactionsState extends State<AllTransactions> {
                   Expanded(
                     child: newList.isEmpty
                         ? Center(
-                            child: Lottie.network(
-                                'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                          )
+                            child: Text(
+                            'no data is available!!',
+                            style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 3, 183, 30)),
+                          ))
                         : ListView.builder(
                             // physics: const NeverScrollableScrollPhysics(),
                             itemCount: newList.length,

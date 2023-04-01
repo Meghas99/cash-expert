@@ -26,6 +26,7 @@ class _ExpenseGraphState extends State<ExpenseGraph> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color.fromRGBO(183, 244, 235, 0.902),
         body: ValueListenableBuilder(
           valueListenable: overViewGraphNotifier,
           builder: (BuildContext context, List<TransactionModel> newList,
@@ -48,20 +49,19 @@ class _ExpenseGraphState extends State<ExpenseGraph> {
               }
             }
             return overViewGraphNotifier.value.isEmpty
-                ? SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Text('no data')
-                          Center(
-                            child: Lottie.network(
-                                'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                          ),
-                        ],
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          'no data is available!!',
+                          style: TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 3, 183, 30)),
+                        ),
                       ),
-                    ),
+                    ],
                   )
                 : SfCircularChart(
                     tooltipBehavior: _tooltipBehavior,
